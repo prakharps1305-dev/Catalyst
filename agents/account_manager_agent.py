@@ -7,6 +7,11 @@ class AccountManagerAgent:
     @staticmethod
     def answer_question(data:AccountManagerInput) ->AccountManagerOutput:
 
+        for field in ("business_name", "category", "city", "question"):
+            value = getattr(data, field)
+            if not value or not value.strip():
+                raise ValueError(f"{field} must not be empty or blank")
+
         prompt=build_prompt(data)
 
         try:

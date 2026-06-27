@@ -7,6 +7,11 @@ class AnalyticsAgent:
     @staticmethod
     def generate_analytics(data:AnalyticsInput) ->AnalyticsOutput:
 
+        for field in ("business_name", "category", "city", "time_period"):
+            value = getattr(data, field)
+            if not value or not value.strip():
+                raise ValueError(f"{field} must not be empty or blank")
+
         prompt=build_prompt(data)
 
         try:

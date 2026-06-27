@@ -7,6 +7,11 @@ class SocialAgent:
     @staticmethod
     def generate_posts(data:SocialInput) ->SocialAgentOutput:
 
+        for field in ("business_name", "category", "city", "target_audience"):
+            value = getattr(data, field)
+            if not value or not value.strip():
+                raise ValueError(f"{field} must not be empty or blank")
+
         prompt=build_prompt(data)
 
         try:
