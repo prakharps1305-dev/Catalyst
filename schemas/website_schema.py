@@ -24,6 +24,9 @@ class WebsiteOutput(BaseModel):
     testimonials:list[Testimonial]
     cta:str
     primary_color:str
+    why_choose_us: list[str]
+    meta_title: str
+    meta_description: str
 
 class BusinessInput(BaseModel):
     business_name: str
