@@ -37,6 +37,9 @@ def generate(prompt:str,response_schema=None):
     
     logger.info(f"Tokens used: {response.usage_metadata}")
 
+    if not response.candidates:
+        raise ValueError("Gemini returned empty response")
+
     if response_schema:
         return response.parsed
 

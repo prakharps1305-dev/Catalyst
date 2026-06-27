@@ -26,6 +26,9 @@ class WebsiteAgent:
 
             website = generate(prompt, WebsiteOutput)
 
+            if not website or not website.hero_title:
+                raise ValueError("Website generation returned empty content")
+
             logger.info("Website generated successfully")
 
             return website

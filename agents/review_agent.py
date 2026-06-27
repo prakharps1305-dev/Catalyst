@@ -13,8 +13,13 @@ class ReviewAgent:
         prompt=build_prompt(data)
 
         try:
-            return generate(prompt,ReviewAgentOutput)
+            result = generate(prompt,ReviewAgentOutput)
 
         except Exception as e:
 
             raise ValueError(f"Review generation failed: {e}")from e
+
+        if not result.replies:
+            raise ValueError("Review generation returned no replies")
+
+        return result
