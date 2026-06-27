@@ -35,3 +35,4 @@ class BusinessInput(BaseModel):
     email: str
     address:str
     description:str
+    social_links:list[str]

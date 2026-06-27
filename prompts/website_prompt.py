@@ -34,4 +34,5 @@ def build_prompt(business: BusinessInput) -> str:
     Email: {business.email}
     Address: {business.address}
     Description: {business.description}
+    Social Links: {business.social_links}
     """

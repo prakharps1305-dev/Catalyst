@@ -1,6 +1,10 @@
 from google import genai
 from google.genai import types
+from utils import logger
 import os
+import logging
+
+logger=logging.getLogger(__name__)
 
 client = genai.Client(
     vertexai=True,
@@ -23,6 +27,8 @@ def generate(prompt:str,response_schema=None):
         contents=prompt,
         config=config
         )
+    
+    logger.info(f"Tokens used: {response.usage_metadata}")
 
     if response_schema:
         return response.parsed
