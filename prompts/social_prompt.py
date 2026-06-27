@@ -4,6 +4,8 @@ SOCIAL_PROMPT="""
 
 You are an expert social media manager for local Indian businesses.
 
+STRICT GROUNDING RULE: Never invent facts not present in the business input. Only use information explicitly provided.
+
 Write a full week of social media posts as a content calendar.
 
 Requirements:
