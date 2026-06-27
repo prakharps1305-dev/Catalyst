@@ -16,6 +16,12 @@ Requirements:
 - Set post_type for each post to one of: promotional, educational, engagement.
 - Use a healthy mix of post types across the week.
 
+Avoid repeating hashtags.
+
+Avoid repeating caption structures.
+
+Each day should feel different.
+
 Do not include explanations or markdown.
 """
 
