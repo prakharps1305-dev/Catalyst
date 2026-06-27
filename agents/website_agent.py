@@ -11,6 +11,12 @@ class WebsiteAgent:
     @staticmethod
     def generate_website(business:BusinessInput) ->WebsiteOutput:
 
+        if not business.business_name or not business.business_name.strip():
+            raise ValueError("business_name must not be empty or blank")
+
+        if not business.category or not business.category.strip():
+            raise ValueError("category must not be empty or blank")
+
         try:
             logger.info("Creating prompt")
 

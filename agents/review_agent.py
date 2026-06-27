@@ -7,6 +7,9 @@ class ReviewAgent:
     @staticmethod
     def generate_replies(data:ReviewInput) ->ReviewAgentOutput:
 
+        if not data.reviews:
+            raise ValueError("reviews list must not be empty")
+
         prompt=build_prompt(data)
 
         try:
