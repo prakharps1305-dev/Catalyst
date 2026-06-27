@@ -42,7 +42,7 @@ Analytics Output Requirements:
     - Google Business Profile
     - Referral
     - Walk-in
-- estimated_revenue_influenced must be a numeric value only.
+- projected_revenue must be a numeric value only.
 - currency must always be "INR".
 
 Do not include explanations or markdown.
@@ -69,7 +69,7 @@ Visitors: {data.metrics.visitors}
 Website Clicks: {data.metrics.website_clicks}
 Leads: {data.metrics.leads}
 Conversions: {data.metrics.conversions}
-Revenue: ₹{data.metrics.revenue}
+Revenue: {data.metrics.revenue}
 Average Rating: {data.metrics.average_rating}
 Review Count: {data.metrics.review_count}
 Social Engagement: {data.metrics.social_engagement}
