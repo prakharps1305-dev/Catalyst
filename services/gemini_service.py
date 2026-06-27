@@ -3,6 +3,7 @@ from google.genai import types
 from utils import logger
 import os
 import logging
+from tenacity import retry, stop_after_attempt, wait_fixed, before_sleep_log
 
 logger=logging.getLogger(__name__)
 
@@ -12,6 +13,12 @@ client = genai.Client(
     location=os.getenv("GOOGLE_CLOUD_LOCATION")
 )
 
+@retry(
+    stop=stop_after_attempt(3),
+    wait=wait_fixed(2),
+    before_sleep=before_sleep_log(logger, logging.WARNING),
+    reraise=True,
+)
 def generate(prompt:str,response_schema=None):
 
     config = None
