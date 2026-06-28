@@ -1,6 +1,6 @@
 from google import genai
 from google.genai import types
-from utils import logger
+import utils.logger_config
 import os
 import logging
 from tenacity import retry, stop_after_attempt, wait_fixed, before_sleep_log
