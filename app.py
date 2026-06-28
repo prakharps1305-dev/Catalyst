@@ -1,9 +1,3 @@
-from dotenv import load_dotenv
-
-# Load .env before importing agents, since gemini_service builds its
-# Vertex client from env vars at import time.
-load_dotenv()
-
 from fastapi import FastAPI
 from schemas.website_schema import BusinessInput,WebsiteOutput
 from schemas.review_schema import ReviewInput, ReviewAgentOutput

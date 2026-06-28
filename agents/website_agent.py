@@ -1,7 +1,7 @@
 from services.gemini_service import generate
 from schemas.website_schema import WebsiteOutput,BusinessInput
 from prompts.website_prompt import build_prompt
-from utils import logger
+import utils.logger_config
 import logging
 
 logger=logging.getLogger(__name__)
@@ -11,14 +11,18 @@ class WebsiteAgent:
     @staticmethod
     def generate_website(business:BusinessInput) ->WebsiteOutput:
 
-        if not business.business_name or not business.business_name.strip():
-            raise ValueError("business_name must not be empty or blank")
+        for field in BusinessInput.model_fields:
+            value = getattr(business, field)
 
-        if not business.category or not business.category.strip():
-            raise ValueError("category must not be empty or blank")
+            if isinstance(value,str):
+                if not value.strip():
+                    raise ValueError(f"{field} must not be empty or blank")
+            
+            elif value is None:
+                raise ValueError(f"{field} is required")
 
         try:
-            logger.info("Creating prompt")
+            logger.info("Generating website for %s",business.business_name)
 
             prompt=build_prompt(business)
 
@@ -26,14 +30,14 @@ class WebsiteAgent:
 
             website = generate(prompt, WebsiteOutput)
 
-            if not website or not website.hero_title:
+            if website is None or not website.hero_title.strip():
                 raise ValueError("Website generation returned empty content")
 
             logger.info("Website generated successfully")
 
             return website
         
-        except Exception as e:
+        except Exception:
 
             logger.exception("Website generation failed")
             raise
