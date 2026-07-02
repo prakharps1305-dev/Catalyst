@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+load_dotenv()
 from fastapi import FastAPI
 from schemas.website_schema import BusinessInput,WebsiteOutput
 from schemas.review_schema import ReviewInput, ReviewAgentOutput
@@ -5,13 +7,15 @@ from schemas.campaign_schema import CampaignInput, CampaignAgentOutput
 from schemas.social_schema import SocialInput, SocialAgentOutput
 from schemas.analytics_schema import AnalyticsInput, AnalyticsOutput
 from schemas.account_manager_schema import AccountManagerInput, AccountManagerOutput
+from schemas.payment_schema import PaymentLinkInput, PaymentLinkOutput
+from services.razorpay_service import create_payment_link
 from agents.website_agent import WebsiteAgent
 from agents.review_agent import ReviewAgent
 from agents.campaign_agent import CampaignAgent
 from agents.social_agent import SocialAgent
 from agents.analytics_agent import AnalyticsAgent
 from agents.account_manager_agent import AccountManagerAgent
-from utils import logger
+import utils.logger_config
 import logging
 
 app=FastAPI(title="GrowthPilot API",version="1.0.0")
@@ -60,3 +64,10 @@ def generate_analytics(data:AnalyticsInput):
 def chat(data:AccountManagerInput):
 
     return AccountManagerAgent.answer_question(data)
+
+@app.post("/create-payment-link",response_model=PaymentLinkOutput)
+def payment_link(data:PaymentLinkInput):
+
+    logger.info(f"Payment link requested for {data.business_name}")
+
+    return create_payment_link(data.amount, data.business_name, data.phone)
