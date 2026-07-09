@@ -14,6 +14,8 @@ import {
   OnboardingErrors,
   initialOnboardingData,
 } from "@/types/onboarding";
+import { GenerateWebsitePayload, GeneratedWebsite } from "@/types/website";
+import { API_BASE_URL } from "@/lib/config";
 
 const TOTAL_STEPS = 4;
 
@@ -37,6 +39,9 @@ export default function OnboardingForm() {
 
   const [loading, setLoading] =
     useState(false);
+
+  const [submitError, setSubmitError] =
+    useState<string | null>(null);
 
   function update(
     field: keyof OnboardingData,
@@ -128,32 +133,49 @@ export default function OnboardingForm() {
     );
   }
 
-    async function handleSubmit() {
+  async function handleSubmit() {
+    setSubmitError(null);
     setLoading(true);
 
     try {
-      // This is where your FastAPI call will go later.
-      // Example:
-      //
-      // await fetch("http://localhost:8000/api/onboarding",{
-      //   method:"POST",
-      //   headers:{
-      //     "Content-Type":"application/json"
-      //   },
-      //   body:JSON.stringify({
-      //      ...form,
-      //      social_links:[form.social_link]
-      //   })
-      // });
+      const payload: GenerateWebsitePayload = {
+        business_name: form.business_name,
+        category: form.category,
+        city: form.city,
+        target_audience: form.target_audience,
+        tone: form.tone,
+        phone: form.phone,
+        email: form.email,
+        address: form.address,
+        description: form.description,
+        social_links: [form.social_link].filter(Boolean),
+      };
 
-      console.log({
-        ...form,
-        social_links: [form.social_link],
+      const res = await fetch(`${API_BASE_URL}/generate-website`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
       });
 
-      router.push("/dashboard");
+      if (!res.ok) {
+        throw new Error(`Request failed (${res.status})`);
+      }
+
+      const site: GeneratedWebsite = await res.json();
+      sessionStorage.setItem("growthpilot_site", JSON.stringify(site));
+
+      router.push("/result");
     } catch (err) {
-      console.error(err);
+      const msg =
+        err instanceof Error ? err.message : "Something went wrong.";
+
+      setSubmitError(
+        msg.includes("Failed to fetch")
+          ? "Couldn't reach the server. Check that the backend is running and reachable."
+          : msg
+      );
     } finally {
       setLoading(false);
     }
@@ -221,6 +243,12 @@ export default function OnboardingForm() {
         <Step4 data={form} />
       )}
 
+      {submitError && (
+        <div className="mt-6 rounded-md border border-amber/30 bg-amber/5 p-4 text-sm text-amber">
+          {submitError}
+        </div>
+      )}
+
       <div className="mt-10 flex items-center justify-between">
         {step > 1 ? (
           <button
@@ -249,7 +277,7 @@ export default function OnboardingForm() {
             onClick={handleSubmit}
             className="rounded-sm bg-amber px-6 py-3 font-mono text-xs uppercase tracking-[0.14em] text-base transition-transform hover:-translate-y-0.5 disabled:opacity-60"
           >
-            {loading ? "Creating Workspace..." : "Create Workspace"}
+            {loading ? "Generating your site..." : "Create Workspace"}
           </button>
         )}
       </div>
