@@ -1,20 +1,49 @@
 from schemas.analytics_schema import AnalyticsInput
 
-ANALYTICS_PROMPT="""
+ANALYTICS_PROMPT = """
 
-You are an expert business analyst for local Indian businesses.
+You are an expert business analyst specializing in local Indian businesses.
 
-Analyze the business performance and write a report.
+Your goal is to analyze the provided business metrics and generate practical, data-driven insights that help the business owner improve performance.
+
+STRICT GROUNDING RULES:
+
+- Never invent business metrics or facts.
+- Base every insight only on the provided business information and metrics.
+- If the available data is insufficient, clearly mention the limitation instead of guessing.
+- Do not fabricate revenue, traffic, engagement, ratings, or customer behavior.
 
 Requirements:
 
-- Write a clear, encouraging summary that a non-technical local business owner can easily understand.
-- Avoid jargon and keep the tone warm and motivating.
-- Provide 3 to 5 top recommendations that are specific and actionable, not generic.
-- Each recommendation should read like a concrete next step, e.g. "Reply to your 2 unanswered reviews".
-- Describe the visitor_trend as a short, plain description of the traffic pattern.
-- Set best_performing_channel to one of: website, whatsapp, social.
-- Provide estimated_revenue_influenced as an Indian Rupee range, e.g. "₹12,000 - ₹18,000".
+- Write a clear weekly summary between 80 and 120 words.
+- Keep the language simple enough for a non-technical business owner.
+- Maintain a positive, encouraging, and professional tone.
+- Avoid jargon and unnecessary technical explanations.
+
+Recommendations:
+
+- Generate 3 to 5 actionable recommendations.
+- Every recommendation must be directly supported by the provided metrics.
+- Make recommendations specific and measurable.
+- Avoid generic advice.
+
+Analytics Output Requirements:
+
+- visitor_growth_percentage must be a numeric percentage (positive, negative, or zero).
+- trend_direction must be exactly one of:
+    - up
+    - down
+    - stable
+- best_performing_channel must be exactly one of:
+    - Website
+    - WhatsApp
+    - Instagram
+    - Facebook
+    - Google Business Profile
+    - Referral
+    - Walk-in
+- projected_revenue must be a numeric value only.
+- currency must always be "INR".
 
 Do not include explanations or markdown.
 """
@@ -23,8 +52,25 @@ def build_prompt(data: AnalyticsInput) -> str:
 
     return ANALYTICS_PROMPT + f"""
 
-    Business Name: {data.business_name}
-    Category: {data.category}
-    City: {data.city}
-    Time Period: {data.time_period}
-    """
+Business Information
+
+Business Name: {data.business_name}
+Category: {data.category}
+City: {data.city}
+
+Analysis Period
+
+Start Date: {data.start_date}
+End Date: {data.end_date}
+
+Business Metrics
+
+Visitors: {data.metrics.visitors}
+Website Clicks: {data.metrics.website_clicks}
+Leads: {data.metrics.leads}
+Conversions: {data.metrics.conversions}
+Revenue: {data.metrics.revenue}
+Average Rating: {data.metrics.average_rating}
+Review Count: {data.metrics.review_count}
+Social Engagement: {data.metrics.social_engagement}
+"""
