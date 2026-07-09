@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 load_dotenv()
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from schemas.website_schema import BusinessInput,WebsiteOutput
 from schemas.review_schema import ReviewInput, ReviewAgentOutput
 from schemas.campaign_schema import CampaignInput, CampaignAgentOutput
@@ -17,10 +18,25 @@ from agents.analytics_agent import AnalyticsAgent
 from agents.account_manager_agent import AccountManagerAgent
 import utils.logger_config
 import logging
+import os
 
 app=FastAPI(title="GrowthPilot API",version="1.0.0")
 
 logger=logging.getLogger(__name__)
+
+# CORS: the frontend (Lovable) is served from a different origin than this API,
+# so the browser will block calls to /generate-website etc. unless we explicitly
+# allow it here. ALLOWED_ORIGINS is a comma-separated env var (e.g. your Lovable
+# preview + production URLs); falls back to "*" for local/dev testing only.
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def home():
