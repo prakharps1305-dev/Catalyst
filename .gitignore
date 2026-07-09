@@ -8,3 +8,8 @@ env/
 __pycache__/
 *.pyc
 .env
+.env
+Backend/venv/
+Backend/.env
+Backend/venv/
+Backend/__pycache__/
