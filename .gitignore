@@ -6,6 +6,12 @@ venv/
 venv/
 env/
 __pycache__/
+node_modules
+.next
+.env
+.env.local
+dist
+build
 *.pyc
 .env
 .env
