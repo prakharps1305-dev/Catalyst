@@ -10,21 +10,22 @@ import Freelancers from "@/components/landing/Freelancers";
 import FinalCTA from "@/components/landing/FinalCTA";
 import FAQ from "@/components/landing/FAQ";
 import Footer from "@/components/layout/Footer";
+import Reveal from "@/components/ui/Reveal";
 
 export default function Home() {
   return (
     <main className="text-cream bg-grain min-h-screen overflow-x-hidden">
       <Navbar />
       <Hero />
-      <Problem />
-      <Features />
-      <Agents />
-      <Pricing />
-      <Flywheel />
-      <Comparison />
-      <Freelancers />
-      <FinalCTA />
-      <FAQ />
+      <Reveal><Problem /></Reveal>
+      <Reveal><Features /></Reveal>
+      <Reveal><Agents /></Reveal>
+      <Reveal><Pricing /></Reveal>
+      <Reveal><Flywheel /></Reveal>
+      <Reveal><Comparison /></Reveal>
+      <Reveal><Freelancers /></Reveal>
+      <Reveal><FinalCTA /></Reveal>
+      <Reveal><FAQ /></Reveal>
       <Footer />
     </main>
   );

@@ -9,6 +9,7 @@ import Heading from "@/components/common/Heading";
 import Card from "@/components/common/Card";
 import Badge from "@/components/common/Badge";
 import Button from "@/components/common/Button";
+import CopyButton from "@/components/ui/CopyButton";
 import { GeneratedWebsite } from "@/types/website";
 
 export default function ResultPage() {
@@ -92,14 +93,20 @@ export default function ResultPage() {
                 /site/{slug}
               </a>
             </p>
-            <a
-              href={`/site/${slug}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-sm bg-amber px-5 py-2.5 font-mono text-xs uppercase tracking-[0.14em] text-base transition-transform hover:-translate-y-0.5"
-            >
-              View live site →
-            </a>
+            <div className="flex gap-2">
+              <CopyButton
+                path={`/site/${slug}`}
+                className="rounded-sm border border-hairline px-4 py-2.5 font-mono text-xs uppercase tracking-[0.14em] text-cream transition hover:border-amber hover:text-amber"
+              />
+              <a
+                href={`/site/${slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-sm bg-amber px-5 py-2.5 font-mono text-xs uppercase tracking-[0.14em] text-base transition-transform hover:-translate-y-0.5"
+              >
+                View live site →
+              </a>
+            </div>
           </div>
         </div>
       )}

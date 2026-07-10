@@ -101,16 +101,27 @@ export default function OnboardingForm() {
 
       case 3:
         if (!form.email.trim())
-          nextErrors.email =
-            "Email is required.";
+          nextErrors.email = "Email is required.";
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim()))
+          nextErrors.email = "Enter a valid email address.";
 
         if (!form.phone.trim())
-          nextErrors.phone =
-            "Phone number is required.";
+          nextErrors.phone = "Phone number is required.";
+        else {
+          const digits = form.phone.replace(/\D/g, "");
+          if (digits.length < 8 || digits.length > 15)
+            nextErrors.phone = "Enter a valid phone number.";
+        }
 
         if (!form.social_link.trim())
+          nextErrors.social_link = "Add one social link.";
+        else if (
+          !/^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/\S*)?$/.test(
+            form.social_link.trim()
+          )
+        )
           nextErrors.social_link =
-            "Add one social link.";
+            "Enter a valid link (e.g. instagram.com/yourbiz).";
 
         break;
     }

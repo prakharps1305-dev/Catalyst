@@ -1,6 +1,45 @@
 import { createClient } from "@/lib/supabase/client";
 import type { GenerateWebsitePayload, GeneratedWebsite } from "@/types/website";
 
+export type BusinessInput = {
+  business_name: string;
+  category: string;
+  city: string;
+  target_audience: string;
+  phone: string;
+  existing_url?: string;
+};
+
+/**
+ * Saves just a business (no generated site) — used by the "I already have a
+ * website" growth-only flow. Returns the new business id, or null if no user.
+ */
+export async function saveBusinessOnly(
+  input: BusinessInput
+): Promise<string | null> {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
+
+  const { data, error } = await supabase
+    .from("businesses")
+    .insert({
+      user_id: user.id,
+      name: input.business_name,
+      category: input.category,
+      city: input.city,
+      target_audience: input.target_audience,
+      phone: input.phone,
+      social_links: input.existing_url ? [input.existing_url] : [],
+    })
+    .select("id")
+    .single();
+  if (error) throw error;
+  return data.id as string;
+}
+
 function slugify(name: string): string {
   const base = name
     .toLowerCase()

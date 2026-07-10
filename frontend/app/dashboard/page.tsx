@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Sidebar from "@/components/layout/Sidebar";
+import CopyButton from "@/components/ui/CopyButton";
 import { createClient } from "@/lib/supabase/server";
 
 const AGENT_LABEL: Record<string, string> = {
@@ -141,14 +142,20 @@ export default async function DashboardPage() {
                           /site/{s.slug} · {timeAgo(s.created_at)}
                         </p>
                       </div>
-                      <a
-                        href={`/site/${s.slug}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="shrink-0 rounded-sm border border-hairline px-4 py-2 font-mono text-xs uppercase tracking-[0.12em] text-cream transition hover:border-amber hover:text-amber"
-                      >
-                        View live →
-                      </a>
+                      <div className="flex shrink-0 gap-2">
+                        <CopyButton
+                          path={`/site/${s.slug}`}
+                          className="rounded-sm border border-hairline px-3 py-2 font-mono text-xs uppercase tracking-[0.12em] text-muted transition hover:border-amber hover:text-amber"
+                        />
+                        <a
+                          href={`/site/${s.slug}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="rounded-sm border border-hairline px-4 py-2 font-mono text-xs uppercase tracking-[0.12em] text-cream transition hover:border-amber hover:text-amber"
+                        >
+                          View live →
+                        </a>
+                      </div>
                     </div>
                   ))}
                 </div>

@@ -33,6 +33,13 @@ export default function OnboardingPage() {
         <div className="mt-10 rounded-md border border-hairline bg-surface/40 p-6 md:p-8">
           <OnboardingForm />
         </div>
+
+        <p className="mt-6 text-center text-sm text-muted">
+          Already have a website?{" "}
+          <a href="/onboarding/existing" className="text-amber hover:text-sage">
+            Skip the builder and just grow →
+          </a>
+        </p>
       </div>
     </main>
   );
