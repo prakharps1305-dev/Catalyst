@@ -16,6 +16,7 @@ import {
 } from "@/types/onboarding";
 import { GenerateWebsitePayload, GeneratedWebsite } from "@/types/website";
 import { API_BASE_URL } from "@/lib/config";
+import { saveGeneratedSite } from "@/lib/sites";
 
 const TOTAL_STEPS = 4;
 
@@ -165,6 +166,17 @@ export default function OnboardingForm() {
 
       const site: GeneratedWebsite = await res.json();
       sessionStorage.setItem("growthpilot_site", JSON.stringify(site));
+
+      // Persist to the user's account if signed in; otherwise just preview.
+      try {
+        const saved = await saveGeneratedSite(payload, site);
+        if (saved) {
+          router.push(`/result?slug=${saved.slug}`);
+          return;
+        }
+      } catch (saveErr) {
+        console.error("Could not save generated site:", saveErr);
+      }
 
       router.push("/result");
     } catch (err) {

@@ -1,17 +1,14 @@
 import OnboardingForm from "@/components/Onboarding/OnboardingForm";
+import Logo from "@/components/ui/Logo";
 
 export default function OnboardingPage() {
   return (
     <main className="min-h-screen bg-base text-cream bg-grain">
       <header className="border-b border-hairline px-6 py-5">
         <a href="/" className="mx-auto flex max-w-2xl items-center gap-2.5">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <circle cx="12" cy="12" r="9.5" stroke="#FF8A3D" strokeWidth="1.4" />
-            <path d="M12 6.5V12L16 14.5" stroke="#FF8A3D" strokeWidth="1.4" strokeLinecap="round" />
-            <circle cx="12" cy="12" r="1.4" fill="#FF8A3D" />
-          </svg>
+          <Logo className="h-5 w-5" />
           <span className="font-mono text-sm text-cream">
-            Catalyst<span className="text-amber">.AI</span>
+            Catalyst
           </span>
         </a>
       </header>

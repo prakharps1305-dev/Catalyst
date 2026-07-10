@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import Logo from "@/components/ui/Logo";
+import SignOutButton from "@/components/auth/SignOutButton";
 
 
 
@@ -128,13 +130,9 @@ export default function Sidebar() {
   const content = (
     <div className="flex h-full flex-col">
       <div className="flex items-center gap-2.5 px-6 py-6">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <circle cx="12" cy="12" r="9.5" stroke="#FF8A3D" strokeWidth="1.4" />
-          <path d="M12 6.5V12L16 14.5" stroke="#FF8A3D" strokeWidth="1.4" strokeLinecap="round" />
-          <circle cx="12" cy="12" r="1.4" fill="#FF8A3D" />
-        </svg>
+        <Logo className="h-6 w-6" />
         <span className="font-mono text-sm text-cream">
-          Catalyst<span className="text-amber">.AI</span>
+          Catalyst
         </span>
       </div>
 
@@ -187,12 +185,7 @@ export default function Sidebar() {
          </div>
         </div>
 
-        <button
-         onClick={() => router.push("/")}
-           className="w-full rounded-sm border border-hairline py-2 font-mono text-xs uppercase tracking-[0.12em] text-muted transition hover:border-amber hover:text-amber"
-            >
-            Log Out
-       </button>
+        <SignOutButton className="w-full rounded-sm border border-hairline py-2 font-mono text-xs uppercase tracking-[0.12em] text-muted transition hover:border-amber hover:text-amber" />
 
       </div>
       
@@ -204,13 +197,9 @@ export default function Sidebar() {
       {/* Mobile top bar */}
       <div className="flex items-center justify-between border-b border-hairline bg-base px-4 py-3 md:hidden">
         <div className="flex items-center gap-2.5">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <circle cx="12" cy="12" r="9.5" stroke="#FF8A3D" strokeWidth="1.4" />
-            <path d="M12 6.5V12L16 14.5" stroke="#FF8A3D" strokeWidth="1.4" strokeLinecap="round" />
-            <circle cx="12" cy="12" r="1.4" fill="#FF8A3D" />
-          </svg>
+          <Logo className="h-5 w-5" />
           <span className="font-mono text-sm text-cream">
-            Catalyst<span className="text-amber">.AI</span>
+            Catalyst
           </span>
         </div>
         <button

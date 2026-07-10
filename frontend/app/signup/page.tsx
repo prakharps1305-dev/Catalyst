@@ -1,8 +1,7 @@
-
 import LoginForm from "@/components/auth/LoginForm";
 import Logo from "@/components/ui/Logo";
 
-export default function LoginPage() {
+export default function SignupPage() {
   return (
     <main className="grid min-h-screen bg-base text-cream md:grid-cols-2">
       {/* Branding panel — hidden on small screens */}
@@ -15,9 +14,9 @@ export default function LoginPage() {
         </a>
 
         <div>
-          <p className="eyebrow text-amber mb-4">Flight plan — live</p>
+          <p className="eyebrow text-amber mb-4">Get started</p>
           <h2 className="font-display max-w-sm text-2xl leading-tight text-cream lg:text-[1.9rem]">
-            Every login picks up exactly where your last experiment left off.
+            Five questions. Two minutes. A full AI growth team, running for you.
           </h2>
         </div>
 
@@ -31,21 +30,19 @@ export default function LoginPage() {
         <div className="w-full max-w-sm">
           <a href="/" className="mb-10 flex items-center gap-2.5 md:hidden">
             <Logo className="h-5 w-5" />
-            <span className="font-mono text-sm text-cream">
-              Catalyst
-            </span>
+            <span className="font-mono text-sm text-cream">Catalyst</span>
           </a>
 
-          <p className="eyebrow text-amber mb-3">Access</p>
+          <p className="eyebrow text-amber mb-3">Create account</p>
           <h1 className="font-display text-3xl leading-tight text-cream">
-            Welcome back.
+            Start your trial.
           </h1>
           <p className="mt-3 text-sm text-muted">
-            Sign in to keep your flight plan running.
+            Create your Catalyst account — no card required.
           </p>
 
           <div className="mt-8">
-            <LoginForm />
+            <LoginForm mode="signup" />
           </div>
         </div>
       </div>

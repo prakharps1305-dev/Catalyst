@@ -8,9 +8,10 @@
   --color-surface2: #171f1b;
   --color-elevated: #1d2723;
 
-  /* Accents */
-  --color-amber: #ff9142;
-  --color-amber-deep: #f06a12;
+  /* Accents (primary accent kept under the "amber" name for utility class
+     compatibility, but themed green) */
+  --color-amber: #34d399;
+  --color-amber-deep: #10b981;
   --color-sage: #74d6a0;
 
   /* Text */

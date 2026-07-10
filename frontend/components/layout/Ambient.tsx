@@ -9,12 +9,12 @@ export default function Ambient() {
       {/* base wash */}
       <div className="absolute inset-0 bg-base" />
 
-      {/* warm amber glow, top-left */}
+      {/* green glow, top-left */}
       <div
         className="drift absolute -left-[10%] -top-[15%] h-[55vw] w-[55vw] rounded-full blur-[120px]"
         style={{
           background:
-            "radial-gradient(circle at center, rgba(255,145,66,0.20), transparent 65%)",
+            "radial-gradient(circle at center, rgba(52,211,153,0.20), transparent 65%)",
         }}
       />
 
@@ -27,12 +27,12 @@ export default function Ambient() {
         }}
       />
 
-      {/* deep amber glow, bottom */}
+      {/* deep green glow, bottom */}
       <div
         className="drift absolute bottom-[-20%] left-[25%] h-[50vw] w-[50vw] rounded-full blur-[140px]"
         style={{
           background:
-            "radial-gradient(circle at center, rgba(240,106,18,0.12), transparent 65%)",
+            "radial-gradient(circle at center, rgba(16,185,129,0.14), transparent 65%)",
         }}
       />
 

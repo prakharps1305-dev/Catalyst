@@ -3,18 +3,23 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { FormEvent } from "react";
+import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
 
+type Mode = "signin" | "signup";
 
-export default function LoginForm() {
+export default function LoginForm({ mode = "signin" }: { mode?: Mode }) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
-  const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "error" | "sent">(
+    "idle"
+  );
   const [errorMsg, setErrorMsg] = useState("");
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (!email || !password) {
@@ -22,15 +27,60 @@ export default function LoginForm() {
       setErrorMsg("Enter your email and password to continue.");
       return;
     }
+    if (mode === "signup" && password.length < 6) {
+      setStatus("error");
+      setErrorMsg("Password must be at least 6 characters.");
+      return;
+    }
 
     setStatus("loading");
     setErrorMsg("");
 
-    // Placeholder for real auth — wire this up to your auth provider.
-    setTimeout(() => {
-      setStatus("idle");
-      router.push("/onboarding");
-    }, 1200);
+    const supabase = createClient();
+
+    if (mode === "signup") {
+      const { data, error } = await supabase.auth.signUp({ email, password });
+      if (error) {
+        setStatus("error");
+        setErrorMsg(error.message);
+        return;
+      }
+      // If email confirmation is enabled, there's no session yet.
+      if (!data.session) {
+        setStatus("sent");
+        return;
+      }
+      router.push("/dashboard");
+      router.refresh();
+      return;
+    }
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) {
+      setStatus("error");
+      setErrorMsg(error.message);
+      return;
+    }
+    router.push("/dashboard");
+    router.refresh();
+  }
+
+  if (status === "sent") {
+    return (
+      <div className="w-full max-w-sm">
+        <p className="rounded-sm border border-sage/30 bg-sage/10 px-4 py-3 text-sm text-cream">
+          Almost there — we sent a confirmation link to{" "}
+          <span className="text-sage">{email}</span>. Confirm it, then{" "}
+          <Link href="/login" className="text-amber hover:text-sage">
+            sign in
+          </Link>
+          .
+        </p>
+      </div>
+    );
   }
 
   return (
@@ -62,12 +112,14 @@ export default function LoginForm() {
           >
             Password
           </label>
-          <a
-            href="#"
-            className="font-mono text-[0.65rem] uppercase tracking-[0.12em] text-muted transition-colors hover:text-amber"
-          >
-            Forgot?
-          </a>
+          {mode === "signin" && (
+            <a
+              href="#"
+              className="font-mono text-[0.65rem] uppercase tracking-[0.12em] text-muted transition-colors hover:text-amber"
+            >
+              Forgot?
+            </a>
+          )}
         </div>
 
         <div className="relative mt-2">
@@ -75,7 +127,7 @@ export default function LoginForm() {
             id="password"
             name="password"
             type={showPassword ? "text" : "password"}
-            autoComplete="current-password"
+            autoComplete={mode === "signup" ? "new-password" : "current-password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••"
@@ -101,15 +153,17 @@ export default function LoginForm() {
         </div>
       </div>
 
-      <label className="mt-5 flex items-center gap-2.5 text-sm text-muted">
-        <input
-          type="checkbox"
-          checked={remember}
-          onChange={(e) => setRemember(e.target.checked)}
-          className="h-4 w-4 rounded-sm border border-hairline bg-surface/60 accent-[#FF8A3D]"
-        />
-        Remember this device
-      </label>
+      {mode === "signin" && (
+        <label className="mt-5 flex items-center gap-2.5 text-sm text-muted">
+          <input
+            type="checkbox"
+            checked={remember}
+            onChange={(e) => setRemember(e.target.checked)}
+            className="h-4 w-4 rounded-sm border border-hairline bg-surface/60 accent-[#34d399]"
+          />
+          Remember this device
+        </label>
+      )}
 
       {status === "error" && (
         <p
@@ -131,18 +185,31 @@ export default function LoginForm() {
               <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2.5" strokeOpacity="0.25" />
               <path d="M21 12a9 9 0 00-9-9" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
             </svg>
-            Signing in
+            {mode === "signup" ? "Creating account" : "Signing in"}
           </>
+        ) : mode === "signup" ? (
+          "Create account"
         ) : (
           "Sign in"
         )}
       </button>
 
       <p className="mt-7 text-center text-sm text-muted">
-        New to Catalyst?{" "}
-        <a href="#" className="text-amber transition-colors hover:text-sage">
-          Start your trial
-        </a>
+        {mode === "signup" ? (
+          <>
+            Already have an account?{" "}
+            <Link href="/login" className="text-amber transition-colors hover:text-sage">
+              Sign in
+            </Link>
+          </>
+        ) : (
+          <>
+            New to Catalyst?{" "}
+            <Link href="/signup" className="text-amber transition-colors hover:text-sage">
+              Start your trial
+            </Link>
+          </>
+        )}
       </p>
     </form>
   );

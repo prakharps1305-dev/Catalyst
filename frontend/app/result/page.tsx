@@ -15,8 +15,10 @@ export default function ResultPage() {
   const router = useRouter();
   const [site, setSite] = useState<GeneratedWebsite | null>(null);
   const [notFound, setNotFound] = useState(false);
+  const [slug, setSlug] = useState<string | null>(null);
 
   useEffect(() => {
+    setSlug(new URLSearchParams(window.location.search).get("slug"));
     const raw = sessionStorage.getItem("growthpilot_site");
 
     if (!raw) {
@@ -63,7 +65,7 @@ export default function ResultPage() {
         <div className="mx-auto flex max-w-5xl items-center justify-between">
           <a href="/" className="flex items-center gap-2.5">
             <span className="font-mono text-sm text-cream">
-              Catalyst<span style={{ color: accent }}>.AI</span>
+              Catalyst
             </span>
           </a>
           <Button
@@ -74,6 +76,33 @@ export default function ResultPage() {
           </Button>
         </div>
       </header>
+
+      {slug && (
+        <div className="border-b border-hairline bg-surface/40 px-6 py-4">
+          <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-3 sm:flex-row">
+            <p className="text-sm text-cream">
+              <span className="text-sage">✓ Saved &amp; published.</span> Your
+              live site:{" "}
+              <a
+                href={`/site/${slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-amber underline-offset-2 hover:text-sage hover:underline"
+              >
+                /site/{slug}
+              </a>
+            </p>
+            <a
+              href={`/site/${slug}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-sm bg-amber px-5 py-2.5 font-mono text-xs uppercase tracking-[0.14em] text-base transition-transform hover:-translate-y-0.5"
+            >
+              View live site →
+            </a>
+          </div>
+        </div>
+      )}
 
       <Section className="text-center">
         <Container>

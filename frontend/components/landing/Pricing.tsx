@@ -108,7 +108,7 @@ export default function Pricing() {
                     >
                       <path
                         d="M3 8.5L6.2 11.5L13 4.5"
-                        stroke={t.featured ? "#FF8A3D" : "#6FCF97"}
+                        stroke={t.featured ? "#34d399" : "#6FCF97"}
                         strokeWidth="1.6"
                         strokeLinecap="round"
                         strokeLinejoin="round"

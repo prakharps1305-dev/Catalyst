@@ -24,6 +24,11 @@ h3 {
   letter-spacing: -0.018em;
 }
 
+/* keep anchored sections clear of the sticky header when jumped to via nav */
+section[id] {
+  scroll-margin-top: 5.5rem;
+}
+
 ::selection {
   background: var(--color-amber);
   color: var(--color-base);

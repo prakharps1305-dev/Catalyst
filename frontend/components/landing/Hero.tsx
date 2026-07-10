@@ -44,7 +44,9 @@ export default function HeroSection() {
                  Start Free Trial
               </Button>
               </Link>
-              <Button variant="secondary">Watch Demo</Button>
+              <Link href="/onboarding">
+                <Button variant="secondary">Watch Demo</Button>
+              </Link>
               
             </div>
 

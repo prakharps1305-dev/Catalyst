@@ -3,19 +3,21 @@ import Logo from "@/components/ui/Logo";
 const columns = [
   {
     title: "Product",
-    links: ["Features", "Pricing", "Changelog", "Status"],
+    links: [
+      { label: "How it works", href: "/#features" },
+      { label: "Agents", href: "/#agents" },
+      { label: "Pricing", href: "/#pricing" },
+      { label: "Compare", href: "/#compare" },
+      { label: "FAQ", href: "/#faq" },
+    ],
   },
   {
-    title: "Company",
-    links: ["About", "Careers", "Blog"],
-  },
-  {
-    title: "Resources",
-    links: ["Docs", "API reference", "Community"],
-  },
-  {
-    title: "Legal",
-    links: ["Privacy", "Terms", "Security"],
+    title: "Get started",
+    links: [
+      { label: "Start free", href: "/onboarding" },
+      { label: "Sign in", href: "/login" },
+      { label: "Dashboard", href: "/dashboard" },
+    ],
   },
 ];
 
@@ -23,12 +25,12 @@ export default function Footer() {
   return (
     <footer className="border-t border-hairline px-6 py-16">
       <div className="mx-auto max-w-6xl">
-        <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr_1fr_1fr]">
+        <div className="grid gap-12 md:grid-cols-[1.8fr_1fr_1fr]">
           <div>
             <div className="group flex items-center gap-2.5">
               <Logo className="h-6 w-6" />
               <span className="font-mono text-sm text-cream">
-                Catalyst<span className="text-amber">.AI</span>
+                Catalyst
               </span>
             </div>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
@@ -44,9 +46,9 @@ export default function Footer() {
               </p>
               <ul className="mt-4 space-y-3">
                 {col.links.map((l) => (
-                  <li key={l}>
-                    <a href="#" className="text-sm text-cream/80 transition-colors hover:text-amber">
-                      {l}
+                  <li key={l.label}>
+                    <a href={l.href} className="text-sm text-cream/80 transition-colors hover:text-amber">
+                      {l.label}
                     </a>
                   </li>
                 ))}

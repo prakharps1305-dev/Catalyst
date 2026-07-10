@@ -5,9 +5,11 @@ import Link from "next/link";
 import Logo from "@/components/ui/Logo";
 
 const links = [
-  { label: "Product", href: "#hero" },
   { label: "How it Works", href: "#features" },
+  { label: "Agents", href: "#agents" },
   { label: "Pricing", href: "#pricing" },
+  { label: "Compare", href: "#compare" },
+  { label: "FAQ", href: "#faq" },
 ];
 
 export default function Navbar() {
