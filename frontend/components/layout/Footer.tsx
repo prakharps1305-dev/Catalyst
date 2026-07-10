@@ -61,9 +61,14 @@ export default function Footer() {
           <p className="font-mono text-[0.65rem] text-muted">
             © {new Date().getFullYear()} Catalyst. All systems nominal.
           </p>
-          <p className="font-mono text-[0.65rem] text-muted">
-            Built for teams who ship, not just plan.
-          </p>
+          <div className="flex gap-6 font-mono text-[0.65rem] text-muted">
+            <a href="/privacy" className="transition-colors hover:text-amber">
+              Privacy
+            </a>
+            <a href="/terms" className="transition-colors hover:text-amber">
+              Terms
+            </a>
+          </div>
         </div>
       </div>
     </footer>
