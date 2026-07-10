@@ -19,7 +19,7 @@ const navItems = [
       {
         label: "AI Workforce",
         icon: "plane",
-        href: "/dashboard",
+        href: "/dashboard/agents",
       },
       {
         label: "Business Profile",
