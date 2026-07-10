@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Logo from "@/components/ui/Logo";
 import SignOutButton from "@/components/auth/SignOutButton";
+import { createClient } from "@/lib/supabase/client";
 
 
 
@@ -126,6 +127,28 @@ export default function Sidebar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const [me, setMe] = useState<{ email: string; business: string | null }>({
+    email: "",
+    business: null,
+  });
+
+  useEffect(() => {
+    const supabase = createClient();
+    (async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data: biz } = await supabase
+        .from("businesses")
+        .select("name")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      setMe({ email: user.email ?? "", business: biz?.name ?? null });
+    })();
+  }, []);
 
   const content = (
     <div className="flex h-full flex-col">
@@ -169,20 +192,18 @@ export default function Sidebar() {
 
       <div className="border-t border-hairline px-4 py-4 space-y-4">
 
-        <div className="flex items-center gap-3 rounded-sm px-2 py-2 hover:bg-surface/60">
-         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface2 font-mono text-xs text-cream">
-         JD
-        </div>
-
-       <div className="min-w-0">
-         <p className="truncate text-sm text-cream">
-               Jordan Diaz
-         </p>
-
-          <p className="truncate font-mono text-[0.65rem] text-muted">
-            Acme Co.
-          </p>
-         </div>
+        <div className="flex items-center gap-3 rounded-sm px-2 py-2">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface2 font-mono text-xs uppercase text-cream">
+            {(me.email || "?").slice(0, 2)}
+          </div>
+          <div className="min-w-0">
+            <p className="truncate text-sm text-cream">
+              {me.business ?? "Your business"}
+            </p>
+            <p className="truncate font-mono text-[0.65rem] text-muted">
+              {me.email || "…"}
+            </p>
+          </div>
         </div>
 
         <SignOutButton className="w-full rounded-sm border border-hairline py-2 font-mono text-xs uppercase tracking-[0.12em] text-muted transition hover:border-amber hover:text-amber" />

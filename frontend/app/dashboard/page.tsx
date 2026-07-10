@@ -1,152 +1,205 @@
+import Link from "next/link";
 import Sidebar from "@/components/layout/Sidebar";
-import DashboardHeader from "@/components/dashboard/DashboardHeader";
-import StatCard from "@/components/dashboard/StatCard";
-import AgentCard, { Agent } from "@/components/dashboard/AgentCard";
-import QuickActions from "@/components/dashboard/QuickActions";
-import ActivityFeed from "@/components/dashboard/ActivityFeed";
+import { createClient } from "@/lib/supabase/server";
 
-const agents: Agent[] = [
-  {
-    id: "website",
-    name: "Website Agent",
-    icon: "website",
-    description:
-      "Optimizes your website experience and continuously looks for opportunities to improve conversions.",
-    status: "Active",
-    jobsToday: 18,
-    lastSync: "2 mins ago",
-    lastAction: "Updated homepage headline",
-    defaultActive: true,
-  },
-  {
-    id: "review",
-    name: "Review Agent",
-    icon: "review",
-    description:
-      "Monitors customer reviews and drafts professional replies automatically.",
-    status: "Active",
-    jobsToday: 9,
-    lastSync: "8 mins ago",
-    lastAction: "Responded to 3 Google reviews",
-    defaultActive: true,
-  },
-  {
-    id: "whatsapp",
-    name: "WhatsApp Agent",
-    icon: "whatsapp",
-    description:
-      "Handles customer conversations and qualifies leads before handing them to your team.",
-    status: "Active",
-    jobsToday: 41,
-    lastSync: "1 min ago",
-    lastAction: "Answered customer enquiry",
-    defaultActive: true,
-  },
-  {
-    id: "social",
-    name: "Social Agent",
-    icon: "social",
-    description:
-      "Creates and schedules social media content aligned with your brand.",
-    status: "Paused",
-    jobsToday: 0,
-    lastSync: "Yesterday",
-    lastAction: "Campaign paused",
-    defaultActive: false,
-  },
-  {
-    id: "analytics",
-    name: "Analytics Agent",
-    icon: "analytics",
-    description:
-      "Monitors every connected agent and summarizes business performance.",
-    status: "Active",
-    jobsToday: 5,
-    lastSync: "10 mins ago",
-    lastAction: "Generated morning report",
-    defaultActive: true,
-  },
-];
-const stats = [
-  {
-    title: "Agents Online",
-    value: "5",
-    subtitle: "All systems operational",
-  },
-  {
-    title: "Tasks Today",
-    value: "42",
-    subtitle: "Completed automatically",
-  },
-  {
-    title: "Pending Approvals",
-    value: "2",
-    subtitle: "Waiting for review",
-  },
-  {
-    title: "Automation Rate",
-    value: "91%",
-    subtitle: "Business running smoothly",
-  },
-];
+const AGENT_LABEL: Record<string, string> = {
+  chat: "Ask Catalyst",
+  social: "Social calendar",
+  campaign: "WhatsApp campaign",
+  reviews: "Review replies",
+  analytics: "Analytics report",
+  website: "Website",
+};
 
-export default function DashboardPage() {
-  const activeCount = agents.filter((a) => a.defaultActive).length;
+function timeAgo(iso: string): string {
+  const s = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
+  if (s < 60) return "just now";
+  const m = Math.floor(s / 60);
+  if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h ago`;
+  return `${Math.floor(h / 24)}d ago`;
+}
+
+export default async function DashboardPage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const [businessRes, sitesRes, outputsRes] = await Promise.all([
+    supabase
+      .from("businesses")
+      .select("name")
+      .eq("user_id", user!.id)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+    supabase
+      .from("sites")
+      .select("id, slug, content, created_at", { count: "exact" })
+      .eq("user_id", user!.id)
+      .order("created_at", { ascending: false })
+      .limit(5),
+    supabase
+      .from("agent_outputs")
+      .select("agent_type, created_at", { count: "exact" })
+      .eq("user_id", user!.id)
+      .order("created_at", { ascending: false })
+      .limit(6),
+  ]);
+
+  const businessName = businessRes.data?.name ?? null;
+  const sites = (sitesRes.data ?? []) as {
+    id: string;
+    slug: string;
+    content: { hero_title?: string };
+    created_at: string;
+  }[];
+  const siteCount = sitesRes.count ?? sites.length;
+  const outputs = (outputsRes.data ?? []) as {
+    agent_type: string;
+    created_at: string;
+  }[];
+  const runCount = outputsRes.count ?? outputs.length;
+
+  const stats = [
+    { label: "Sites published", value: String(siteCount), sub: "Live on the web" },
+    { label: "Agent runs", value: String(runCount), sub: "Tasks completed" },
+    { label: "Agents available", value: "5", sub: "Ready to work" },
+    {
+      label: "Business",
+      value: businessName ?? "—",
+      sub: businessName ? "Active" : "Not set up",
+    },
+  ];
 
   return (
     <div className="flex min-h-screen bg-base text-cream">
       <Sidebar />
-
       <main className="flex-1">
-
-    <DashboardHeader />
-
-    <div className="px-6 pt-8 md:px-10">
-
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {stats.map((stat) => (
-                <StatCard
-                    key={stat.title}
-                    title={stat.title}
-                    value={stat.value}
-                    subtitle={stat.subtitle}
-                />
-            ))}
-        </div>
-
-
-        <div className="mt-8">
-            <QuickActions />
-        </div>
-
-        <div className="mt-8">
-            <ActivityFeed />
-        </div>
-
-        <div className="mt-8">
-            <div className="mb-6">
-                <p className="eyebrow text-amber">
-                    Your AI Workforce
+        <div className="px-6 pt-8 pb-16 md:px-10">
+          <div className="mx-auto max-w-5xl">
+            {/* Header */}
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <h1 className="font-display text-4xl leading-tight text-cream md:text-5xl">
+                  Welcome back.
+                </h1>
+                <p className="mt-2 max-w-lg text-muted">
+                  {businessName
+                    ? `Here's how ${businessName} is doing. Run your agents any time.`
+                    : "Generate your website to get started, then your agents can go to work."}
                 </p>
-
-                <h2 className="mt-2 font-display text-2xl text-cream">
-                    Active agents
-                </h2>
+              </div>
+              <Link
+                href="/dashboard/agents"
+                className="rounded-sm bg-amber px-5 py-2.5 font-mono text-xs uppercase tracking-[0.14em] text-base transition-transform hover:-translate-y-0.5"
+              >
+                Run agents →
+              </Link>
             </div>
 
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {agents.map((agent) => (
-                    <AgentCard
-                        key={agent.id}
-                        agent={agent}
-                    />
-                ))}
+            {/* Stats */}
+            <div className="mt-10 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+              {stats.map((s) => (
+                <div key={s.label} className="glass rounded-md p-6">
+                  <p className="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-muted">
+                    {s.label}
+                  </p>
+                  <p className="mt-3 truncate font-display text-3xl text-cream">
+                    {s.value}
+                  </p>
+                  <p className="mt-1 text-sm text-sage">{s.sub}</p>
+                </div>
+              ))}
             </div>
+
+            {/* Your sites */}
+            <div className="mt-10">
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="font-display text-xl text-cream">Your sites</h2>
+                <Link
+                  href="/onboarding"
+                  className="font-mono text-xs uppercase tracking-[0.14em] text-muted transition-colors hover:text-amber"
+                >
+                  + New site
+                </Link>
+              </div>
+              {sites.length > 0 ? (
+                <div className="grid gap-4">
+                  {sites.map((s) => (
+                    <div
+                      key={s.id}
+                      className="flex items-center justify-between gap-4 rounded-md border border-hairline bg-surface/40 p-5"
+                    >
+                      <div className="min-w-0">
+                        <p className="truncate text-cream">
+                          {s.content?.hero_title ?? "Generated site"}
+                        </p>
+                        <p className="mt-1 font-mono text-[0.65rem] text-muted">
+                          /site/{s.slug} · {timeAgo(s.created_at)}
+                        </p>
+                      </div>
+                      <a
+                        href={`/site/${s.slug}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="shrink-0 rounded-sm border border-hairline px-4 py-2 font-mono text-xs uppercase tracking-[0.12em] text-cream transition hover:border-amber hover:text-amber"
+                      >
+                        View live →
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="rounded-md border border-hairline bg-surface/40 p-6 text-sm text-muted">
+                  No sites yet.{" "}
+                  <Link href="/onboarding" className="text-amber hover:text-sage">
+                    Generate your first one
+                  </Link>
+                  .
+                </div>
+              )}
+            </div>
+
+            {/* Recent activity */}
+            <div className="mt-10">
+              <h2 className="mb-4 font-display text-xl text-cream">
+                Recent activity
+              </h2>
+              {outputs.length > 0 ? (
+                <ul className="divide-y divide-hairline rounded-md border border-hairline bg-surface/40">
+                  {outputs.map((o, i) => (
+                    <li
+                      key={i}
+                      className="flex items-center justify-between px-5 py-4"
+                    >
+                      <span className="text-sm text-cream">
+                        {AGENT_LABEL[o.agent_type] ?? o.agent_type} ran
+                      </span>
+                      <span className="font-mono text-[0.65rem] text-muted">
+                        {timeAgo(o.created_at)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="rounded-md border border-hairline bg-surface/40 p-6 text-sm text-muted">
+                  No agent activity yet.{" "}
+                  <Link
+                    href="/dashboard/agents"
+                    className="text-amber hover:text-sage"
+                  >
+                    Run an agent
+                  </Link>
+                  .
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-
-    </div>
-
-</main>
+      </main>
     </div>
   );
 }
