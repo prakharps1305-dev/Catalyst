@@ -67,10 +67,8 @@ export default function Pricing() {
           {tiers.map((t) => (
             <div
               key={t.name}
-              className={`relative flex flex-col rounded-md border p-7 transition-all duration-300 ${
-                t.featured
-                  ? "border-amber bg-surface"
-                  : "border-hairline bg-surface/40"
+              className={`glass lift relative flex flex-col rounded-md p-7 ${
+                t.featured ? "glow-amber" : ""
               }`}
             >
               

@@ -50,7 +50,12 @@ export default function ResultPage() {
     );
   }
 
-  const accent = site.primary_color || "#FF8A3D";
+  // primary_color should be a hex code, but the model sometimes returns a name
+  // like "Warm Amber". Only trust valid hex; otherwise fall back to the default.
+  const isHex = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(
+    (site.primary_color || "").trim()
+  );
+  const accent = isHex ? site.primary_color.trim() : "#FF8A3D";
 
   return (
     <main className="min-h-screen bg-base text-cream bg-grain">

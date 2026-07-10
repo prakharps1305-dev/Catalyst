@@ -10,6 +10,7 @@ import {
 import Link from "next/link";
 
 import Agent from "@/components/dashboard/AgentCard";
+import TiltCard from "@/components/ui/TiltCard";
 
 import {
   Globe,
@@ -21,7 +22,7 @@ import {
 
 export default function HeroSection() {
   return (
-    <Section className="relative overflow-hidden bg-[var(--color-base)] text-[var(--color-cream)]">
+    <Section className="relative overflow-hidden text-[var(--color-cream)]">
       <Container>
         <div className="grid grid-cols-2 items-center gap-16">
 
@@ -52,7 +53,8 @@ export default function HeroSection() {
 
           {/* RIGHT SIDE DASHBOARD */}
           <div>
-            <Card className="rounded-3xl border border-zinc-800 bg-[#132423] p-6 shadow-2xl">
+            <TiltCard>
+            <Card className="glass-strong rounded-3xl p-6">
               <div className="mb-6 flex items-center justify-between">
                 <div>
                   <h3 className="text-xl font-semibold">
@@ -107,6 +109,7 @@ export default function HeroSection() {
                 </div>
               </div>
             </Card>
+            </TiltCard>
           </div>
         </div>
       </Container>

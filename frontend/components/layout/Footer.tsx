@@ -1,3 +1,5 @@
+import Logo from "@/components/ui/Logo";
+
 const columns = [
   {
     title: "Product",
@@ -23,12 +25,8 @@ export default function Footer() {
       <div className="mx-auto max-w-6xl">
         <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr_1fr_1fr]">
           <div>
-            <div className="flex items-center gap-2.5">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <circle cx="12" cy="12" r="9.5" stroke="#FF8A3D" strokeWidth="1.4" />
-                <path d="M12 6.5V12L16 14.5" stroke="#FF8A3D" strokeWidth="1.4" strokeLinecap="round" />
-                <circle cx="12" cy="12" r="1.4" fill="#FF8A3D" />
-              </svg>
+            <div className="group flex items-center gap-2.5">
+              <Logo className="h-6 w-6" />
               <span className="font-mono text-sm text-cream">
                 Catalyst<span className="text-amber">.AI</span>
               </span>

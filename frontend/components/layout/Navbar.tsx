@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Logo from "@/components/ui/Logo";
 
 const links = [
   { label: "Product", href: "#hero" },
@@ -19,13 +20,9 @@ export default function Navbar() {
         {/* Logo */}
         <a
           href="#"
-          className="flex items-center gap-3 transition-transform duration-300 hover:scale-105"
+          className="group flex items-center gap-3 transition-transform duration-300 hover:scale-105"
         >
-          <div className="flex h-9 w-9 items-center justify-center rounded-full border border-amber bg-amber/10">
-            <span className="font-display text-lg font-semibold text-amber">
-              C
-            </span>
-          </div>
+          <Logo className="h-9 w-9" />
 
           <span className="font-display text-xl tracking-tight text-cream">
             Catalyst

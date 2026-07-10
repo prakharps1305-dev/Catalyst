@@ -180,3 +180,22 @@
   box-shadow:
     0 14px 40px rgba(0,0,0,.22);
 }
+
+
+/* Ambient orb drift (for the background glow layer) */
+
+@keyframes drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  33%  { transform: translate3d(4%, -3%, 0) scale(1.08); }
+  66%  { transform: translate3d(-3%, 4%, 0) scale(0.96); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+
+@keyframes driftAlt {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(-5%, 3%, 0) scale(1.1); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+
+.drift { animation: drift 22s ease-in-out infinite; }
+.drift-alt { animation: driftAlt 28s ease-in-out infinite; }

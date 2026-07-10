@@ -1,21 +1,24 @@
-.venv/
-.env
+# Python
 __pycache__/
 *.pyc
-venv/
+.venv/
 venv/
 env/
-__pycache__/
-node_modules
-.next
+
+# Env / secrets
 .env
 .env.local
-dist
-build
-*.pyc
-.env
-.env
-Backend/venv/
 Backend/.env
 Backend/venv/
-Backend/__pycache__/
+
+# Node / Next.js
+node_modules
+.next
+dist
+build
+
+# IDE
+.idea/
+
+# macOS
+.DS_Store

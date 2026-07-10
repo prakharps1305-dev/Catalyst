@@ -1,12 +1,27 @@
-:root{
-  --color-base:#063c29;
-  --color-surface:#07283f;
-  --color-surface2:#09566a;
+/* Design tokens (Tailwind v4). Defining these under @theme registers the
+   color/font utilities (bg-base, text-amber, border-hairline, font-display, …)
+   AND exposes them as CSS variables on :root for var(--color-*) usage. */
+@theme {
+  /* Backgrounds — deep, warm near-black with a green undertone, layered for depth */
+  --color-base: #090d0b;
+  --color-surface: #101613;
+  --color-surface2: #171f1b;
+  --color-elevated: #1d2723;
 
-  --color-amber:#FF8A3D;
-  --color-sage:#6FCF97;
-  --color-cream:#F4F1EA;
-  --color-muted:#8FA39D;
-  --color-hairline:#2A3F40;
+  /* Accents */
+  --color-amber: #ff9142;
+  --color-amber-deep: #f06a12;
+  --color-sage: #74d6a0;
+
+  /* Text */
+  --color-cream: #f5f2ea;
+  --color-muted: #93a49d;
+
+  /* Lines */
+  --color-hairline: #223029;
+
+  /* Fonts */
+  --font-display: var(--font-fraunces), serif;
+  --font-body: var(--font-inter), sans-serif;
+  --font-mono: var(--font-jbmono), monospace;
 }
-

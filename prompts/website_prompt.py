@@ -19,7 +19,7 @@ STRICT GROUNDING RULES:
 - Generate 5-7 services.
 - Generate 3 FAQs.
 - Generate 3 testimonials.
-- Choose a primary brand color.
+- Choose a primary brand color as a hex code (e.g. "#FF8A3D").
 - Use the business description as the primary source of specificity.
 - Do not invent services or claims that are not supported by the description.
 - Maintain the requested tone consistently across every section.
@@ -44,7 +44,8 @@ Content requirements:
 - Hero subtitle: under 20 words.
 - About section: 80-120 words.
 - Services: generate 5-7 services derived from the category and description.
-- Choose a primary brand color appropriate to the category and tone.
+- Choose a primary brand color appropriate to the category and tone, returned as
+  a hex color code only (e.g. "#1E88E5"). Never return a color name.
 
 - Why Choose Us (USP block): exactly 3 bullet points that summarize the
   business's key differentiators, derived only from the provided description.

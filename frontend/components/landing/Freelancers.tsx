@@ -1,0 +1,28 @@
+export default function Freelancers() {
+  return (
+    <section id="freelancers" className="border-t border-hairline px-6 py-24">
+      <div className="mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-[1fr_auto]">
+        <div>
+          <p className="eyebrow text-amber mb-4">For Freelancers</p>
+
+          <h2 className="font-display max-w-2xl text-3xl leading-tight text-cream md:text-[2.5rem]">
+            Local business leads, straight to WhatsApp.
+          </h2>
+
+          <p className="mt-4 max-w-2xl leading-relaxed text-muted">
+            Designers and developers join the Catalyst marketplace for
+            ₹299/month — a fraction of Upwork&apos;s 20% cut — and get matched to
+            real local projects.
+          </p>
+        </div>
+
+        <a
+          href="#"
+          className="justify-self-start rounded-sm border border-hairline px-6 py-3 font-mono text-xs uppercase tracking-[0.14em] text-cream transition hover:border-muted md:justify-self-end"
+        >
+          + Join as a freelancer
+        </a>
+      </div>
+    </section>
+  );
+}

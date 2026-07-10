@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import Ambient from "@/components/layout/Ambient";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -34,7 +35,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" data-scroll-behavior="smooth" className={`${fraunces.variable} ${inter.variable} ${jbmono.variable}`}>
-      <body className="font-body antialiased">{children}</body>
+      <body className="font-body antialiased">
+        <Ambient />
+        {children}
+      </body>
     </html>
   );
 }
