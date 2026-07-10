@@ -147,6 +147,12 @@ export default async function DashboardPage() {
                           path={`/site/${s.slug}`}
                           className="rounded-sm border border-hairline px-3 py-2 font-mono text-xs uppercase tracking-[0.12em] text-muted transition hover:border-amber hover:text-amber"
                         />
+                        <Link
+                          href={`/dashboard/edit/${s.slug}`}
+                          className="rounded-sm border border-hairline px-4 py-2 font-mono text-xs uppercase tracking-[0.12em] text-cream transition hover:border-amber hover:text-amber"
+                        >
+                          Edit
+                        </Link>
                         <a
                           href={`/site/${s.slug}`}
                           target="_blank"

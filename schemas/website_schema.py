@@ -40,3 +40,8 @@ class BusinessInput(BaseModel):
     description:str
     social_links:list[str]
     reference_images: list[str] = []
+
+
+class EditWebsiteInput(BaseModel):
+    current: WebsiteOutput
+    instruction: str

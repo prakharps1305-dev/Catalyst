@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 load_dotenv()
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from schemas.website_schema import BusinessInput,WebsiteOutput
+from schemas.website_schema import BusinessInput,WebsiteOutput,EditWebsiteInput
 from schemas.review_schema import ReviewInput, ReviewAgentOutput
 from schemas.campaign_schema import CampaignInput, CampaignAgentOutput
 from schemas.social_schema import SocialInput, SocialAgentOutput
@@ -55,6 +55,13 @@ def generate_website(business:BusinessInput):
     logger.info(f"Website generation requested for {business.business_name}")
 
     return WebsiteAgent.generate_website(business)
+
+@app.post("/edit-website",response_model=WebsiteOutput)
+def edit_website(data:EditWebsiteInput):
+
+    logger.info("Website edit requested")
+
+    return WebsiteAgent.edit_website(data.current, data.instruction)
 
 @app.post("/generate-reviews",response_model=ReviewAgentOutput)
 def generate_reviews(data:ReviewInput):

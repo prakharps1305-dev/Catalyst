@@ -1,6 +1,6 @@
 from services.gemini_service import generate
 from schemas.website_schema import WebsiteOutput,BusinessInput
-from prompts.website_prompt import build_prompt
+from prompts.website_prompt import build_prompt, build_edit_prompt
 import utils.logger_config
 import logging
 
@@ -47,4 +47,29 @@ class WebsiteAgent:
         except Exception:
 
             logger.exception("Website generation failed")
+            raise
+
+    @staticmethod
+    def edit_website(current: WebsiteOutput, instruction: str) -> WebsiteOutput:
+
+        if not instruction or not instruction.strip():
+            raise ValueError("instruction must not be empty")
+
+        try:
+            logger.info("Editing website: %s", instruction)
+
+            prompt = build_edit_prompt(current.model_dump_json(), instruction)
+
+            updated = generate(prompt, WebsiteOutput)
+
+            if updated is None or not updated.hero_title.strip():
+                raise ValueError("Website edit returned empty content")
+
+            logger.info("Website edited successfully")
+
+            return updated
+
+        except Exception:
+
+            logger.exception("Website edit failed")
             raise

@@ -90,3 +90,22 @@ def build_prompt(business: BusinessInput) -> str:
     Description: {business.description}
     Social Links: {business.social_links}
     """
+
+
+def build_edit_prompt(current_json: str, instruction: str) -> str:
+    return f"""
+You are editing an existing small-business website. Here is the current website
+content as JSON:
+
+{current_json}
+
+The business owner has requested this change:
+
+"{instruction}"
+
+Apply ONLY what the request implies. Return the COMPLETE updated website as JSON
+with the same fields and structure. Keep every other field exactly as it was
+unless the change clearly requires touching it. If the request asks for a colour
+change, update primary_color to a valid hex code (e.g. "#1E88E5"). Do not add
+explanations — return only the website JSON.
+"""
