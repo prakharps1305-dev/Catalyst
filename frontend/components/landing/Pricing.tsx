@@ -1,3 +1,5 @@
+import SubscribeButton from "@/components/billing/SubscribeButton";
+
 const tiers = [
   {
     name: "Starter",
@@ -11,7 +13,8 @@ const tiers = [
       "Weekly Growth Insights",
       "Email Support",
     ],
-    cta: "Start Free Trial",
+    cta: "Get started",
+    amount: 1999,
     featured: false,
   },
   {
@@ -27,7 +30,8 @@ const tiers = [
       "Priority Support",
       "Monthly Strategy Review",
     ],
-    cta: "Start Free Trial",
+    cta: "Get started",
+    amount: 7999,
     featured: true,
   },
   {
@@ -44,6 +48,7 @@ const tiers = [
       "Custom Integrations",
     ],
     cta: "Contact Sales",
+    amount: null,
     featured: false,
   },
 ];
@@ -120,16 +125,25 @@ export default function Pricing() {
                 ))}
               </ul>
 
-              <a
-                href="#"
-                className={`mt-8 rounded-sm px-5 py-3 text-center font-mono text-xs uppercase tracking-[0.14em] transition-transform hover:-translate-y-0.5 ${
-                  t.featured
-                    ? "bg-amber border border-amber text-base shadow-lg hover:brightness-110"
-                    : "border border-hairline text-cream hover:border-muted"
-                }`}
-              >
-                {t.cta}
-              </a>
+              {t.amount ? (
+                <SubscribeButton
+                  amount={t.amount}
+                  className={`mt-8 w-full rounded-sm px-5 py-3 text-center font-mono text-xs uppercase tracking-[0.14em] transition-transform hover:-translate-y-0.5 ${
+                    t.featured
+                      ? "bg-amber border border-amber text-base shadow-lg hover:brightness-110"
+                      : "border border-hairline text-cream hover:border-muted"
+                  }`}
+                >
+                  {t.cta}
+                </SubscribeButton>
+              ) : (
+                <a
+                  href="mailto:sales@catalyst.example"
+                  className="mt-8 block w-full rounded-sm border border-hairline px-5 py-3 text-center font-mono text-xs uppercase tracking-[0.14em] text-cream transition-transform hover:-translate-y-0.5 hover:border-muted"
+                >
+                  {t.cta}
+                </a>
+              )}
             </div>
           ))}
         </div>

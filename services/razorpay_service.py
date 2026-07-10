@@ -36,10 +36,13 @@ def create_payment_link(amount_rupees: int, business_name: str, phone: str) -> d
         "amount": amount_rupees * 100,
         "currency": "INR",
         "description": f"Payment for {business_name}",
-        "customer": {
-            "contact": phone
-        }
     }
+
+    # Razorpay requires contact length 8-14; only attach it when it's plausible,
+    # otherwise omit the customer block entirely (it's optional).
+    cleaned = "".join(ch for ch in (phone or "") if ch.isdigit() or ch == "+")
+    if 8 <= len(cleaned) <= 14:
+        payload["customer"] = {"contact": cleaned}
 
     response = client.payment_link.create(payload)
 
