@@ -98,6 +98,7 @@ export async function saveGeneratedSite(
       address: input.address,
       city: input.city,
     },
+    _images: input.reference_images ?? [],
   };
 
   const { data: site, error: siteErr } = await supabase
