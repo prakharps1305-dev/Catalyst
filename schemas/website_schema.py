@@ -39,3 +39,4 @@ class BusinessInput(BaseModel):
     address:str
     description:str
     social_links:list[str]
+    reference_images: list[str] = []

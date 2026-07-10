@@ -9,6 +9,7 @@ export type GenerateWebsitePayload = {
   address: string;
   description: string;
   social_links: string[];
+  reference_images: string[];
 };
 
 export type Service = { title: string; description: string };

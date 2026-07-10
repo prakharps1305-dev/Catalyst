@@ -26,9 +26,16 @@ class WebsiteAgent:
 
             prompt=build_prompt(business)
 
+            if business.reference_images:
+                prompt += (
+                    "\n\nReference images of the business, its space, or its "
+                    "branding are attached. Use them to inform the primary_color "
+                    "(match the dominant brand color) and the overall tone."
+                )
+
             logger.info("Calling Gemini")
 
-            website = generate(prompt, WebsiteOutput)
+            website = generate(prompt, WebsiteOutput, image_urls=business.reference_images)
 
             if website is None or not website.hero_title.strip():
                 raise ValueError("Website generation returned empty content")

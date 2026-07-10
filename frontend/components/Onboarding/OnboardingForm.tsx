@@ -17,6 +17,7 @@ import {
 import { GenerateWebsitePayload, GeneratedWebsite } from "@/types/website";
 import { API_BASE_URL } from "@/lib/config";
 import { saveGeneratedSite } from "@/lib/sites";
+import { createClient } from "@/lib/supabase/client";
 
 const TOTAL_STEPS = 4;
 
@@ -43,6 +44,30 @@ export default function OnboardingForm() {
 
   const [submitError, setSubmitError] =
     useState<string | null>(null);
+
+  const [images, setImages] = useState<string[]>([]);
+  const [uploading, setUploading] = useState(false);
+
+  async function uploadImages(files: FileList | null) {
+    if (!files || files.length === 0) return;
+    setUploading(true);
+    const supabase = createClient();
+    const urls: string[] = [];
+    for (const file of Array.from(files).slice(0, 4)) {
+      const path = `${Date.now()}-${Math.random()
+        .toString(36)
+        .slice(2, 8)}-${file.name.replace(/[^a-zA-Z0-9.]/g, "_")}`;
+      const { error } = await supabase.storage
+        .from("references")
+        .upload(path, file);
+      if (!error) {
+        const { data } = supabase.storage.from("references").getPublicUrl(path);
+        urls.push(data.publicUrl);
+      }
+    }
+    setImages((prev) => [...prev, ...urls].slice(0, 4));
+    setUploading(false);
+  }
 
   function update(
     field: keyof OnboardingData,
@@ -161,6 +186,7 @@ export default function OnboardingForm() {
         address: form.address,
         description: form.description,
         social_links: [form.social_link].filter(Boolean),
+        reference_images: images,
       };
 
       const res = await fetch(`${API_BASE_URL}/generate-website`, {
@@ -244,6 +270,50 @@ export default function OnboardingForm() {
           }}
           update={update}
         />
+      )}
+
+      {step === 2 && (
+        <div className="mt-8">
+          <p className="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-muted">
+            Reference images (optional)
+          </p>
+          <p className="mt-1 text-xs text-muted/70">
+            Add up to 4 photos of your space, logo, or products — the AI matches
+            your look &amp; colours.
+          </p>
+          <div className="mt-4 flex flex-wrap items-center gap-3">
+            {images.map((src, i) => (
+              <div
+                key={i}
+                className="relative h-16 w-16 overflow-hidden rounded-md border border-hairline"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={src} alt="" className="h-full w-full object-cover" />
+                <button
+                  type="button"
+                  onClick={() =>
+                    setImages((p) => p.filter((_, j) => j !== i))
+                  }
+                  className="absolute right-0 top-0 flex h-5 w-5 items-center justify-center bg-base/80 text-xs text-cream"
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+            {images.length < 4 && (
+              <label className="flex h-16 w-16 cursor-pointer items-center justify-center rounded-md border border-dashed border-hairline text-2xl text-muted transition hover:border-amber hover:text-amber">
+                {uploading ? "…" : "+"}
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  onChange={(e) => uploadImages(e.target.files)}
+                />
+              </label>
+            )}
+          </div>
+        </div>
       )}
 
       {step === 3 && (
