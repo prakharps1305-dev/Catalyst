@@ -13,11 +13,11 @@ const faqs = [
   },
   {
     q: "How do WhatsApp and Google integrations work?",
-    a: "You connect your Google Business Profile and WhatsApp number once. Agents then read reviews, publish updates, and prepare campaign messages for you, with every action logged on your dashboard.",
+    a: "Today Catalyst writes everything for you — ready-to-send WhatsApp campaigns, social posts, and drafted replies to reviews you paste in — and you post them. Direct Google Business and WhatsApp connections that publish automatically are coming soon.",
   },
   {
-    q: "What does pricing and cancellation look like?",
-    a: "Plans start at ₹1,499/month with a one-time ₹999 setup. There's no lock-in — cancel anytime and keep everything that's been created for you.",
+    q: "What does pricing look like?",
+    a: "It's a one-time fee — ₹1,500 for Basic and ₹3,000 for Pro. No subscription and no lock-in, and everything we build for you is yours to keep.",
   },
   {
     q: "Do I own my site and content?",

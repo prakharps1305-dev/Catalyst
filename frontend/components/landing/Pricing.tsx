@@ -1,54 +1,50 @@
-import SubscribeButton from "@/components/billing/SubscribeButton";
+import { contactLink } from "@/lib/contact";
 
 const tiers = [
   {
-    name: "Starter",
-    price: "₹1,999",
-    cadence: "/month",
-    desc: "Perfect for founders and small businesses getting started with AI-powered business insights.",
+    name: "Basic",
+    price: "₹1,500",
+    cadence: "one-time",
+    desc: "Get your business online with an AI-built website you can edit anytime.",
     features: [
-      "1 Business Workspace",
-      "Business Health Dashboard",
-      "AI Opportunity Reports",
-      "Weekly Growth Insights",
-      "Email Support",
+      "AI-generated website",
+      "Published on a live URL",
+      "Edit your site with AI prompts",
+      "Your photos & branding",
+      "Email support",
     ],
     cta: "Get started",
-    amount: 1999,
     featured: false,
   },
   {
-    name: "Professional",
-    price: "₹7,999",
-    cadence: "/month",
-    desc: "Built for growing businesses ready to automate operations and make smarter decisions.",
+    name: "Pro",
+    price: "₹3,000",
+    cadence: "one-time",
+    desc: "Everything in Basic, plus the AI growth agents that bring customers back.",
     features: [
-      "Up to 5 Business Workspaces",
-      "Unlimited AI Recommendations",
-      "Real-Time Business Dashboard",
-      "Workflow Automations",
-      "Priority Support",
-      "Monthly Strategy Review",
+      "Everything in Basic",
+      "Social content calendar",
+      "WhatsApp campaign generator",
+      "Review reply drafting",
+      "Weekly analytics reports",
+      "Ask Catalyst — your AI chief of staff",
+      "Priority support",
     ],
     cta: "Get started",
-    amount: 7999,
     featured: true,
   },
   {
-    name: "Enterprise",
-    price: "Custom",
+    name: "Custom",
+    price: "Let's talk",
     cadence: "",
-    desc: "For enterprises requiring advanced integrations, security, and dedicated support.",
+    desc: "Multiple locations, custom integrations, or something we haven't thought of.",
     features: [
-      "Unlimited Workspaces",
-      "Custom AI Workflows",
-      "Dedicated Success Manager",
-      "API Access",
-      "Advanced Security & SSO",
-      "Custom Integrations",
+      "Everything in Pro",
+      "Multiple businesses",
+      "Custom integrations",
+      "Dedicated support",
     ],
-    cta: "Contact Sales",
-    amount: null,
+    cta: "Contact us",
     featured: false,
   },
 ];
@@ -60,12 +56,12 @@ export default function Pricing() {
         <p className="eyebrow text-amber mb-4">Pricing</p>
 
         <h2 className="font-display max-w-2xl text-3xl leading-tight text-cream md:text-[2.5rem]">
-          Flexible pricing for every stage of your business.
+          Simple one-time pricing.
         </h2>
 
-        <p className="mt-4 max-w-2xl text-muted leading-relaxed">
-          Start with a free trial and scale as your business grows. Every plan
-          includes Catalyst's AI-powered business intelligence platform.
+        <p className="mt-4 max-w-2xl leading-relaxed text-muted">
+          No subscription, no lock-in. Pay once and your site goes live — we set
+          it up with you personally.
         </p>
 
         <div className="mt-14 grid gap-6 md:grid-cols-3">
@@ -76,21 +72,14 @@ export default function Pricing() {
                 t.featured ? "glow-amber" : ""
               }`}
             >
-              
+              <h3 className="font-display text-xl text-cream">{t.name}</h3>
 
-              <h3 className="font-display text-xl text-cream">
-                {t.name}
-              </h3>
+              <p className="mt-1 text-sm text-muted">{t.desc}</p>
 
-              <p className="mt-1 text-sm text-muted">
-                {t.desc}
-              </p>
-
-              <div className="mt-6 flex items-baseline gap-1">
+              <div className="mt-6 flex items-baseline gap-2">
                 <span className="font-display text-3xl text-cream">
                   {t.price}
                 </span>
-
                 {t.cadence && (
                   <span className="font-mono text-xs text-muted">
                     {t.cadence}
@@ -119,31 +108,21 @@ export default function Pricing() {
                         strokeLinejoin="round"
                       />
                     </svg>
-
                     <span>{f}</span>
                   </li>
                 ))}
               </ul>
 
-              {t.amount ? (
-                <SubscribeButton
-                  amount={t.amount}
-                  className={`mt-8 w-full rounded-sm px-5 py-3 text-center font-mono text-xs uppercase tracking-[0.14em] transition-transform hover:-translate-y-0.5 ${
-                    t.featured
-                      ? "bg-amber border border-amber text-base shadow-lg hover:brightness-110"
-                      : "border border-hairline text-cream hover:border-muted"
-                  }`}
-                >
-                  {t.cta}
-                </SubscribeButton>
-              ) : (
-                <a
-                  href="mailto:sales@catalyst.example"
-                  className="mt-8 block w-full rounded-sm border border-hairline px-5 py-3 text-center font-mono text-xs uppercase tracking-[0.14em] text-cream transition-transform hover:-translate-y-0.5 hover:border-muted"
-                >
-                  {t.cta}
-                </a>
-              )}
+              <a
+                href={contactLink(t.name)}
+                className={`mt-8 block w-full rounded-sm px-5 py-3 text-center font-mono text-xs uppercase tracking-[0.14em] transition-transform hover:-translate-y-0.5 ${
+                  t.featured
+                    ? "border border-amber bg-amber text-base shadow-lg hover:brightness-110"
+                    : "border border-hairline text-cream hover:border-muted"
+                }`}
+              >
+                {t.cta}
+              </a>
             </div>
           ))}
         </div>

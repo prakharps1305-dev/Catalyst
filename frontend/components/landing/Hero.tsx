@@ -39,9 +39,9 @@ export default function HeroSection() {
             </div>
 
             <div className="mt-10 flex flex-wrap gap-4">
-              <Link href="/login">
+              <Link href="/signup">
               <Button>
-                 Start Free Trial
+                 Get started
               </Button>
               </Link>
               <Link href="/onboarding">

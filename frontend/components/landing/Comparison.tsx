@@ -2,12 +2,13 @@ const columns = ["Capability", "Wix / Squarespace", "Traditional Agency", "Catal
 
 const rows = [
   ["Website creation", "DIY templates", "4–6 weeks", "AI in 2 min"],
-  ["Google SEO", "Manual", "Monthly retainer", "AI continuous"],
-  ["Review management", "Not included", "Manual replies", "AI automated"],
+  ["Edit your site", "Manual editing", "Email the agency", "Just describe it"],
+  ["On-page SEO", "Manual", "Monthly retainer", "Built in"],
+  ["Review replies", "Not included", "Manual replies", "AI drafted"],
   ["WhatsApp campaigns", "Not included", "Extra service", "AI generated"],
-  ["Social content", "Not included", "Extra service", "AI weekly"],
-  ["Lead analytics", "Basic", "Monthly PDF", "Real-time AI"],
-  ["Monthly cost", "₹500–2,000", "₹10,000–50,000", "₹1,499–4,999"],
+  ["Social content", "Not included", "Extra service", "AI generated"],
+  ["Performance reports", "Basic", "Monthly PDF", "AI summaries"],
+  ["Cost", "₹500–2,000/mo", "₹10,000–50,000/mo", "₹1,500–3,000 one-time"],
 ];
 
 export default function Comparison() {

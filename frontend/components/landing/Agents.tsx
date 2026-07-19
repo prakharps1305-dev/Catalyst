@@ -52,7 +52,18 @@ const icons: Record<string, ReactNode> = {
   ),
 };
 
-const agents = [
+type AgentCard = {
+  icon: string;
+  name: string;
+  role: string;
+  points: string[];
+  /** whole agent isn't built yet */
+  soon?: boolean;
+  /** individual capabilities that aren't live yet */
+  soonPoints?: string[];
+};
+
+const agents: AgentCard[] = [
   {
     icon: "globe",
     name: "Website Agent",
@@ -68,6 +79,7 @@ const agents = [
     icon: "pin",
     name: "Google Business Agent",
     role: "Maximises local search",
+    soon: true,
     points: [
       "Optimises Google Business Profile",
       "Suggests photos & descriptions",
@@ -85,6 +97,10 @@ const agents = [
       "Sends review-request campaigns",
       "Flags negative reviews for the owner",
     ],
+    soonPoints: [
+      "Monitors new Google reviews",
+      "Sends review-request campaigns",
+    ],
   },
   {
     icon: "megaphone",
@@ -96,6 +112,7 @@ const agents = [
       "Produces ready-to-send WhatsApp messages",
       "Schedules & tracks performance",
     ],
+    soonPoints: ["Schedules & tracks performance"],
   },
   {
     icon: "share",
@@ -118,6 +135,10 @@ const agents = [
       "Estimates revenue influenced",
       "Weekly performance reports",
     ],
+    soonPoints: [
+      "Tracks visitors & enquiries",
+      "Measures WhatsApp click-through",
+    ],
   },
   {
     icon: "user",
@@ -129,11 +150,16 @@ const agents = [
       "Proactively alerts to risks",
       "Answers owner questions",
     ],
+    soonPoints: [
+      "Summarises performance across agents",
+      "Proactively alerts to risks",
+    ],
   },
   {
     icon: "bag",
     name: "Marketplace Agent",
     role: "Connects businesses with freelancers",
+    soon: true,
     points: [
       "Matches projects to freelancers",
       "Sends WhatsApp lead notifications",
@@ -179,36 +205,56 @@ export default function Agents() {
                 </svg>
               </div>
 
-              <h3 className="mt-5 font-display text-lg text-cream">
-                {agent.name}
-              </h3>
+              <div className="mt-5 flex items-start justify-between gap-2">
+                <h3 className="font-display text-lg text-cream">
+                  {agent.name}
+                </h3>
+                {agent.soon && (
+                  <span className="shrink-0 rounded-full border border-hairline px-2.5 py-1 font-mono text-[0.55rem] uppercase tracking-[0.12em] text-muted">
+                    Coming soon
+                  </span>
+                )}
+              </div>
 
               <p className="mt-1 text-sm text-muted">{agent.role}</p>
 
               <ul className="mt-5 space-y-2.5">
-                {agent.points.map((point) => (
-                  <li
-                    key={point}
-                    className="flex items-start gap-2.5 text-sm text-muted"
-                  >
-                    <svg
-                      width="13"
-                      height="13"
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      className="mt-0.5 shrink-0"
+                {agent.points.map((point) => {
+                  const notLive =
+                    agent.soon || agent.soonPoints?.includes(point);
+                  return (
+                    <li
+                      key={point}
+                      className={`flex items-start gap-2.5 text-sm ${
+                        notLive ? "text-muted/50" : "text-muted"
+                      }`}
                     >
-                      <path
-                        d="M3 8.5L6.2 11.5L13 4.5"
-                        stroke="#6FCF97"
-                        strokeWidth="1.6"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    <span>{point}</span>
-                  </li>
-                ))}
+                      <svg
+                        width="13"
+                        height="13"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        className="mt-0.5 shrink-0"
+                      >
+                        <path
+                          d="M3 8.5L6.2 11.5L13 4.5"
+                          stroke={notLive ? "#5a6b64" : "#6FCF97"}
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                      <span>
+                        {point}
+                        {notLive && !agent.soon && (
+                          <span className="ml-2 whitespace-nowrap rounded-full border border-hairline px-1.5 py-0.5 font-mono text-[0.5rem] uppercase tracking-[0.1em] text-muted/70">
+                            soon
+                          </span>
+                        )}
+                      </span>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}
